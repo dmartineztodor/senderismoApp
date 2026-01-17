@@ -47,5 +47,10 @@ public class MainActivity extends AppCompatActivity {
         btnExit.setOnClickListener(v -> {
             finishAffinity(); // Cierra todas las actividades y sale de la app
         });
+        //Actividad para navegar a la pantalla que tiene el listado de rutas
+        btnView.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ListaRutasActivity.class);
+            startActivity(intent);
+        });
     }
 }

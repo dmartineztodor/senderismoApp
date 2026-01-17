@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">appSenderismo</string>
+    <string name="btn_add_route">Añadir nueva ruta</string>
+    <string name="btn_view_routes">Ver mis rutas</string>
+    <string name="btn_help">Ayuda</string>
+    <string name="btn_about">Acerca de</string>
+    <string name="btn_exit">Salir</string>
+
+    <string name="title_add_route">Nueva Ruta</string>
+    <string name="hint_name">Nombre de la ruta</string>
+    <string name="hint_location">Localización o población</string>
+    <string name="label_type">Tipo de ruta:</string>
+    <string name="radio_circular">Circular</string>
+    <string name="radio_linear">Lineal</string>
+    <string name="label_difficulty">Dificultad (1-5):</string>
+    <string name="hint_distance">Distancia (km)</string>
+    <string name="hint_desc">Descripción</string>
+    <string name="hint_notes">Notas adicionales</string>
+    <string name="switch_fav">Marcar como Favorita</string>
+    <string name="btn_save">Guardar</string>
+    <string name="error_empty_name">El nombre no puede estar vacío</string>
+    <string name="msg_saved">Ruta guardada correctamente</string>
+
+    <string name="about_info">App Senderismo v1.0\nLa app diseñada por y para senderistas entusiasmados\nCreado por: Daniel Martínez Todor y Ruben Gil Lucas\nFecha: 11/01/2026</string>
+    <string name="btn_support">Contactar con soporte</string>
+    <string name="email_subject">Soporte App Senderismo</string>
+</resources>

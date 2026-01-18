@@ -3,13 +3,12 @@ import java.io.Serializable;
 public class Ruta implements Serializable {
     private String nombre;
     private String localizacion;
-    private String tipo; // "Circular" o "Lineal"
+    private String tipo; // Circular o lineal
     private float dificultad; // De 1 a 5
-    private double distancia; // En km
+    private double distancia;
     private String descripcion;
     private String notas;
     private boolean favorita;
-    // Nuevos campos pedidos en el PDF
     private double latitud;
     private double longitud;
 

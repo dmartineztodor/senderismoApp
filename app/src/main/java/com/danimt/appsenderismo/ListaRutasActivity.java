@@ -16,21 +16,23 @@ public class ListaRutasActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RutasAdapter adapter;
-    private List<Ruta> todasLasRutas;
+    public static List<Ruta> todasLasRutas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_rutas);
 
-        // 1. Datos Ficticios
-        todasLasRutas = new ArrayList<>();
-        todasLasRutas.add(new Ruta("Ruta del Cares", "Asturias", "Lineal", 4.5f, 12.0, "Espectacular garganta divina .", true));
-        todasLasRutas.add(new Ruta("Monte Arabí", "Yecla", "Circular", 2.0f, 5.5, "Ruta sencilla con pinturas rupestres.", false));
-        todasLasRutas.add(new Ruta("Sierra Espuña", "Murcia", "Circular", 3.5f, 14.2, "Bosques densos y vistas increíbles.", true));
-        todasLasRutas.add(new Ruta("Mulhacén", "Granada", "Lineal", 5.0f, 20.0, "Ascenso al pico más alto de la península.", false));
+        // Datos de prueba
+        if (todasLasRutas == null) {
+            todasLasRutas = new ArrayList<>();
+            todasLasRutas.add(new Ruta("Ruta del Cares", "Asturias", "Lineal", 4.5f, 12.0, "Espectacular garganta divina.", true));
+            todasLasRutas.add(new Ruta("Monte Arabí", "Yecla", "Circular", 2.0f, 5.5, "Ruta sencilla con pinturas rupestres.", false));
+            todasLasRutas.add(new Ruta("Sierra Espuña", "Murcia", "Circular", 3.5f, 14.2, "Bosques densos y vistas increíbles.", true));
+            todasLasRutas.add(new Ruta("Mulhacén", "Granada", "Lineal", 5.0f, 20.0, "Ascenso al pico más alto de la península.", false));
+        }
 
-        // 2. Configurar RecyclerView
+        // Configurar RecyclerView
         recyclerView = findViewById(R.id.recyclerViewRutas);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -42,7 +44,7 @@ public class ListaRutasActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        // 3. Configurar Spinner
+        // Configurar Spinner
         Spinner spinner = findViewById(R.id.spinnerFiltro);
         String[] opciones = {"Todas", "Fácil (< 2.5)", "Media (2.5 - 4)", "Difícil (> 4)"};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, opciones);
@@ -77,6 +79,9 @@ public class ListaRutasActivity extends AppCompatActivity {
                     break;
             }
         }
-        adapter.setRutas(filtradas);
+        if (adapter != null) {
+            adapter.setRutas(filtradas);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

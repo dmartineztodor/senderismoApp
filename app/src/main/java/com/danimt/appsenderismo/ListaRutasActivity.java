@@ -25,7 +25,7 @@ public class ListaRutasActivity extends AppCompatActivity {
 
         // 1. Datos Ficticios
         todasLasRutas = new ArrayList<>();
-        todasLasRutas.add(new Ruta("Ruta del Cares", "Asturias", "Lineal", 4.5f, 12.0, "Espectacular garganta divina.", true));
+        todasLasRutas.add(new Ruta("Ruta del Cares", "Asturias", "Lineal", 4.5f, 12.0, "Espectacular garganta divina .", true));
         todasLasRutas.add(new Ruta("Monte Arabí", "Yecla", "Circular", 2.0f, 5.5, "Ruta sencilla con pinturas rupestres.", false));
         todasLasRutas.add(new Ruta("Sierra Espuña", "Murcia", "Circular", 3.5f, 14.2, "Bosques densos y vistas increíbles.", true));
         todasLasRutas.add(new Ruta("Mulhacén", "Granada", "Lineal", 5.0f, 20.0, "Ascenso al pico más alto de la península.", false));

@@ -22,6 +22,7 @@ public class DetalleRutaActivity extends AppCompatActivity {
             TextView tvDificultad = findViewById(R.id.tvDetalleDificultad);
             TextView tvTiempo = findViewById(R.id.tvDetalleTiempo);
             TextView tvDesc = findViewById(R.id.tvDescripcionDetalle);
+            TextView tvCoordenadas = findViewById(R.id.tvDetalleCoordenadas);
             CheckBox cbFav = findViewById(R.id.cbFavorito);
 
             tvTitulo.setText(ruta.getNombre());
@@ -29,9 +30,9 @@ public class DetalleRutaActivity extends AppCompatActivity {
             tvDificultad.setText(String.valueOf(ruta.getDificultad()));
             tvDesc.setText(ruta.getDescripcion());
             cbFav.setChecked(ruta.isFavorita());
-
             // Calculamos tiempo con el método del POJO
             tvTiempo.setText(ruta.getTiempoEstimado());
+            tvCoordenadas.setText("Lat: " + ruta.getLatitud() + " / Long: " + ruta.getLongitud());
 
             // Listener para marcar/desmarcar favorito
             cbFav.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -39,6 +40,8 @@ public class DetalleRutaActivity extends AppCompatActivity {
                 String msg = isChecked ? "Añadido a favoritos" : "Quitado de favoritos";
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
             });
+
         }
+
     }
 }

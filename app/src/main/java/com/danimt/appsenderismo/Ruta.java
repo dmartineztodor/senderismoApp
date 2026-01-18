@@ -41,4 +41,19 @@ public class Ruta implements Serializable {
         int minutos = (int) ((tiempo - horas) * 60);
         return horas + "h " + minutos + "m";
     }
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
 }

@@ -37,16 +37,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(browserIntent);
         });
 
-        // Ir a "Acerca De"
+        // Ir a Acerca De
         btnAbout.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AcercaDeActivity.class);
             startActivity(intent);
         });
 
-        // Lógica para salir de la app
+        // Salir de la app
         btnExit.setOnClickListener(v -> {
             finishAffinity(); // Cierra todas las actividades y sale de la app
         });
+
         //Actividad para navegar a la pantalla que tiene el listado de rutas
         btnView.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ListaRutasActivity.class);

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHolder> {
 
-    private List<Ruta> listaRutas;
+    public static List<Ruta> listaRutas;
     private final OnItemClickListener listener;
 
     public interface OnItemClickListener {

@@ -1,5 +1,9 @@
 package com.danimt.appsenderismo;
 
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
 @Entity(tableName = "puntos_interes",
         foreignKeys = @ForeignKey(entity = Ruta.class,
                 parentColumns = "id",

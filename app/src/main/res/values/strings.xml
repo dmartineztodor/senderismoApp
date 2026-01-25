@@ -21,6 +21,16 @@
     <string name="error_empty_name">El nombre no puede estar vacío</string>
     <string name="msg_saved">Ruta guardada correctamente</string>
 
+    <string name="title_add_point">Añadir Punto de Interés</string>
+    <string name="hint_point_name">Nombre</string>
+    <string name="hint_latitude">Latitud</string>
+    <string name="hint_longitude">Longitud</string>
+    <string name="label_points_interest">Puntos de Interés</string>
+    <string name="desc_add_point">Añadir Punto</string>
+    <string name="error_missing_name">Mínimo nombre</string>
+    <string name="msg_point_added">Punto añadido</string>
+    <string name="btn_cancel">Cancelar</string>
+
     <string name="about_info">App Senderismo v1.0\nLa app diseñada por y para senderistas entusiasmados\nCreado por: Daniel Martínez Todor y Ruben Gil Lucas\nFecha: 11/01/2026</string>
     <string name="btn_support">Contactar con soporte</string>
     <string name="email_subject">Soporte App Senderismo</string>

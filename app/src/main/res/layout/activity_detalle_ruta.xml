@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
 
-        <ImageView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:paddingBottom="80dp"> <ImageView
             android:id="@+id/imgCabecera"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -17,119 +22,133 @@
             android:src="@android:drawable/ic_menu_gallery"
             android:background="#DDDDDD"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center_vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvTituloDetalle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text="Nombre Ruta"/>
+
+                <CheckBox
+                    android:id="@+id/cbFavorito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@android:drawable/btn_star"/>
+            </LinearLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="3"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_columnWeight="1">
+                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_myplaces"/>
+                    <TextView android:id="@+id/tvDetalleDistancia" android:text="12km" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                    <TextView android:text="Distancia" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_columnWeight="1">
+                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_sort_by_size"/>
+                    <TextView android:id="@+id/tvDetalleDificultad" android:text="Media" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                    <TextView android:text="Dificultad" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_columnWeight="1">
+                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_recent_history"/>
+                    <TextView android:id="@+id/tvDetalleTiempo" android:text="3h 30m" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                    <TextView android:text="Tiempo Est." android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                </LinearLayout>
+            </GridLayout>
 
             <TextView
-                android:id="@+id/tvTituloDetalle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:text="Nombre Ruta"/>
-
-            <CheckBox
-                android:id="@+id/cbFavorito"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@android:drawable/btn_star"/>
+                android:text="Descripción:"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/tvDescripcionDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Descripción..."
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coordenadas:"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+
+            <TextView
+                android:id="@+id/tvDetalleCoordenadas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Lat: 0.0 / Long: 0.0"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#CCCCCC"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Puntos de Interés:"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerPuntosInteres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <Button
+                android:id="@+id/btnEliminarRuta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eliminar Ruta"
+                android:backgroundTint="#FF4444"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="20dp"/>
+
         </LinearLayout>
+    </ScrollView>
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="3"
-            android:layout_marginTop="20dp">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddPunto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="Añadir punto de interés"
+        app:backgroundTint="#4CAF50"
+        app:tint="#FFFFFF"/>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1">
-                <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_myplaces"/>
-                <TextView android:id="@+id/tvDetalleDistancia" android:text="12km" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                <TextView android:text="Distancia" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1">
-                <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_sort_by_size"/>
-                <TextView android:id="@+id/tvDetalleDificultad" android:text="Media" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                <TextView android:text="Dificultad" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_columnWeight="1">
-                <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_recent_history"/>
-                <TextView android:id="@+id/tvDetalleTiempo" android:text="3h 30m" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                <TextView android:text="Tiempo Est." android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
-            </LinearLayout>
-        </GridLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Descripción:"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"/>
-
-        <TextView
-            android:id="@+id/tvDescripcionDetalle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Descripción..."
-            android:layout_marginTop="5dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Coordenadas:"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"/>
-
-        <TextView
-            android:id="@+id/tvDetalleCoordenadas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lat: 0.0 / Long: 0.0"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="20dp"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#CCCCCC"
-            android:layout_marginBottom="10dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Puntos de Interés:"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginBottom="8dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerPuntosInteres"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
-
-        <Button
-            android:id="@+id/btnEliminarRuta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Eliminar Ruta"
-            android:backgroundTint="#FF4444"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="30dp"/>
-    </LinearLayout>
-</ScrollView>
+</FrameLayout>

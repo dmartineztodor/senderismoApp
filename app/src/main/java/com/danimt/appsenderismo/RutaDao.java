@@ -4,31 +4,35 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
 @Dao
 public interface RutaDao {
 
-    // Esto devuelve el ID de la ruta recién creada.
+    // --- MÉTODOS PARA RUTAS (Estos ya los tenías) ---
     @Insert
-    long insert(Ruta ruta);
+    void insert(Ruta ruta);
+
+    @Update
+    void update(Ruta ruta);
 
     @Delete
     void delete(Ruta ruta);
-
-    @androidx.room.Update
-    void update(Ruta ruta);
 
     @Query("SELECT * FROM rutas")
     List<Ruta> getAllRutas();
 
     @Query("SELECT * FROM rutas WHERE dificultad = :dificultad")
-    List<Ruta> getRutasPorDificultad(float dificultad);
+    List<Ruta> getByDificultad(float dificultad);
 
+
+    // Para guardar un punto nuevo desde el diálogo
     @Insert
     void insertPunto(PuntoInteres punto);
 
+    // Para cargar la lista de puntos de una ruta específica
     @Query("SELECT * FROM puntos_interes WHERE ruta_id = :rutaId")
     List<PuntoInteres> getPuntosDeRuta(int rutaId);
 }

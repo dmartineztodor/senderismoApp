@@ -1,22 +1,24 @@
 package com.danimt.appsenderismo;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog; // Importante para el diálogo
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.danimt.appsenderismo.AppDatabase;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DetalleRutaActivity extends AppCompatActivity {
-
     private RecyclerView recyclerPuntos;
     private PuntosInteresAdapter adapter;
 
@@ -37,6 +39,7 @@ public class DetalleRutaActivity extends AppCompatActivity {
             TextView tvDesc = findViewById(R.id.tvDescripcionDetalle);
             CheckBox cbFav = findViewById(R.id.cbFavorito);
             Button btnEliminar = findViewById(R.id.btnEliminarRuta);
+            FloatingActionButton fab = findViewById(R.id.fabAddPunto); // Botón flotante
 
             // Asignar valores
             tvTitulo.setText(ruta.getNombre());
@@ -46,10 +49,10 @@ public class DetalleRutaActivity extends AppCompatActivity {
             cbFav.setChecked(ruta.isFavorita());
             tvTiempo.setText(ruta.getTiempoEstimado());
 
-            // Actualizar favorito
+            // Favorito
             cbFav.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 ruta.setFavorita(isChecked);
-                actualizarRutaEnBD(ruta); // Guardamos el cambio en tiempo real
+                actualizarRutaEnBD(ruta);
             });
 
             // Borrar ruta
@@ -62,22 +65,85 @@ public class DetalleRutaActivity extends AppCompatActivity {
                         .show();
             });
 
-            // Puntos de interes
+            // Botón flotante (Añadir Puntos)
+            fab.setOnClickListener(v -> mostrarDialogoAñadir(ruta.getId()));
 
-            // Configuramos el RecyclerView
+            // Configurar RecyclerView
             recyclerPuntos = findViewById(R.id.recyclerPuntosInteres);
             recyclerPuntos.setLayoutManager(new LinearLayoutManager(this));
 
-            // Inicializamos el adapter vacío
             adapter = new PuntosInteresAdapter(new ArrayList<>());
             recyclerPuntos.setAdapter(adapter);
 
-            // Cargamos los datos de la base de datos en segundo plano
+            // Cargar datos
             cargarPuntosDeInteres(ruta.getId());
         }
     }
 
-    // Método para cargar puntos (Lectura)
+    // Métodos
+    private void mostrarDialogoAñadir(int rutaId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_nuevo_punto, null);
+
+        EditText etNombre = view.findViewById(R.id.etNombrePunto);
+        EditText etLat = view.findViewById(R.id.etLatitud);
+        EditText etLon = view.findViewById(R.id.etLongitud);
+
+        builder.setView(view)
+                .setTitle(R.string.title_add_point)
+                .setPositiveButton(R.string.btn_save, (dialog, id) -> {
+                    String nombre = etNombre.getText().toString();
+                    String latStr = etLat.getText().toString();
+                    String lonStr = etLon.getText().toString();
+
+                    if (!nombre.isEmpty()) {
+                        guardarPuntoEnBD(nombre, latStr, lonStr, rutaId);
+                    } else {
+                        Toast.makeText(this, R.string.error_missing_name, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(R.string.btn_cancel, (dialog, id) -> dialog.dismiss());
+
+        builder.create().show();
+    }
+
+    private void guardarPuntoEnBD(String nombre, String latStr, String lonStr, int rutaId) {
+        double lat;
+        double lon;
+
+        if (!latStr.isEmpty()) {
+            lat = Double.parseDouble(latStr);
+        } else {
+            lat = 0.0;
+        }
+
+        if (!lonStr.isEmpty()) {
+            lon = Double.parseDouble(lonStr);
+        } else {
+            lon = 0.0;
+        }
+
+        new Thread(() -> {
+            try {
+                PuntoInteres nuevoPunto = new PuntoInteres();
+                nuevoPunto.nombre = nombre;
+                nuevoPunto.latitud = lat;
+                nuevoPunto.longitud = lon;
+                nuevoPunto.ruta_id = rutaId;
+
+                AppDatabase.getDatabase(getApplicationContext()).rutaDao().insertPunto(nuevoPunto);
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, R.string.msg_point_added, Toast.LENGTH_SHORT).show();
+                    cargarPuntosDeInteres(rutaId);
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> Toast.makeText(this, "Error al guardar punto", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+
     private void cargarPuntosDeInteres(int rutaId) {
         new Thread(() -> {
             try {
@@ -85,7 +151,7 @@ public class DetalleRutaActivity extends AppCompatActivity {
                 List<PuntoInteres> puntos = db.rutaDao().getPuntosDeRuta(rutaId);
 
                 runOnUiThread(() -> {
-                    if (puntos != null && !puntos.isEmpty()) {
+                    if (puntos != null) {
                         adapter.setPuntos(puntos);
                     }
                 });
@@ -97,29 +163,26 @@ public class DetalleRutaActivity extends AppCompatActivity {
         }).start();
     }
 
-    // Método para eliminar (Borrado)
     private void eliminarRuta(Ruta ruta) {
         new Thread(() -> {
             try {
                 AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
-                db.rutaDao().delete(ruta); // Borra la ruta y sus puntos (por el Cascade)
+                db.rutaDao().delete(ruta);
 
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Ruta eliminada correctamente", Toast.LENGTH_SHORT).show();
-                    finish(); // Cerramos la actividad para volver a la lista
+                    finish();
                 });
             } catch (Exception e) {
-                runOnUiThread(() -> Toast.makeText(this, "Error al eliminar: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(this, "Error al eliminar", Toast.LENGTH_SHORT).show());
             }
         }).start();
     }
 
-    // Método para actualizar favorito (Modificación)
     private void actualizarRutaEnBD(Ruta ruta) {
         new Thread(() -> {
             try {
-                AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
-                db.rutaDao().update(ruta); // Requiere que tengas el método @Update en el DAO
+                AppDatabase.getDatabase(getApplicationContext()).rutaDao().update(ruta);
             } catch (Exception e) {
                 e.printStackTrace();
             }

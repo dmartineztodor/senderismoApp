@@ -27,9 +27,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Ver rutas
-        btnView.setOnClickListener(v ->
-                Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show()
-        );
+        btnView.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ListaRutasActivity.class);
+            startActivity(intent);
+        });
 
         // Abrir web
         btnHelp.setOnClickListener(v -> {
@@ -46,12 +47,6 @@ public class MainActivity extends AppCompatActivity {
         // Salir de la app
         btnExit.setOnClickListener(v -> {
             finishAffinity(); // Cierra todas las actividades y sale de la app
-        });
-
-        //Actividad para navegar a la pantalla que tiene el listado de rutas
-        btnView.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ListaRutasActivity.class);
-            startActivity(intent);
         });
     }
 }

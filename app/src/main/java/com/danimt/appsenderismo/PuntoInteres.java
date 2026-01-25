@@ -11,7 +11,6 @@ import androidx.room.PrimaryKey;
                 childColumns = "ruta_id",
                 onDelete = ForeignKey.CASCADE))
 public class PuntoInteres {
-
     @PrimaryKey(autoGenerate = true)
     public int id;
 
@@ -24,10 +23,8 @@ public class PuntoInteres {
     @ColumnInfo(name = "longitud")
     public double longitud;
 
-    // --- NUEVO CAMPO OBLIGATORIO SEGÚN PDF ---
     @ColumnInfo(name = "foto")
     public String foto; // Guardaremos la URL o ruta del archivo
-    // -----------------------------------------
 
     @ColumnInfo(name = "ruta_id")
     public int ruta_id;

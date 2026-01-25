@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-@Entity(tableName = "rutas") // 1. Define el nombre de la tabla
+@Entity(tableName = "rutas")
 public class Ruta implements Serializable {
 
-    // 2. Clave primaria autogenerada
+    // ID autogenerado
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -44,11 +44,10 @@ public class Ruta implements Serializable {
     @ColumnInfo(name = "longitud")
     private double longitud;
 
-    // 3. Constructor vacío (OBLIGATORIO PARA ROOM)
+    // Constructor vacio
     public Ruta() {
     }
 
-    // 4. Constructor lógico (Marcado con @Ignore para que Room no se confunda)
     @Ignore
     public Ruta(String nombre, String localizacion, String tipo, float dificultad, double distancia, String descripcion, boolean favorita) {
         this.nombre = nombre;
@@ -60,46 +59,94 @@ public class Ruta implements Serializable {
         this.favorita = favorita;
     }
 
-    // --- GETTERS Y SETTERS (Room los necesita todos) ---
+    // Getters y setters
+    public int getId() {
+        return id;
+    }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getLocalizacion() { return localizacion; }
-    public void setLocalizacion(String localizacion) { this.localizacion = localizacion; }
+    public String getLocalizacion() {
+        return localizacion;
+    }
+    public void setLocalizacion(String localizacion) {
+        this.localizacion = localizacion;
+    }
 
-    public String getTipo() { return tipo; }
-    public void setTipo(String tipo) { this.tipo = tipo; }
+    public String getTipo() {
+        return tipo;
+    }
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 
-    public float getDificultad() { return dificultad; }
-    public void setDificultad(float dificultad) { this.dificultad = dificultad; }
+    public float getDificultad() {
+        return dificultad;
+    }
+    public void setDificultad(float dificultad) {
+        this.dificultad = dificultad;
+    }
 
-    public double getDistancia() { return distancia; }
-    public void setDistancia(double distancia) { this.distancia = distancia; }
+    public double getDistancia() {
+        return distancia;
+    }
+    public void setDistancia(double distancia) {
+        this.distancia = distancia;
+    }
 
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public String getDescripcion() {
+        return descripcion;
+    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
-    public String getNotas() { return notas; }
-    public void setNotas(String notas) { this.notas = notas; }
+    public String getNotas() {
+        return notas;
+    }
+    public void setNotas(String notas) {
+        this.notas = notas;
+    }
 
-    public boolean isFavorita() { return favorita; }
-    public void setFavorita(boolean favorita) { this.favorita = favorita; }
+    public boolean isFavorita() {
+        return favorita;
+    }
+    public void setFavorita(boolean favorita) {
+        this.favorita = favorita;
+    }
 
-    public double getLatitud() { return latitud; }
-    public void setLatitud(double latitud) { this.latitud = latitud; }
+    public double getLatitud() {
+        return latitud;
+    }
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
 
-    public double getLongitud() { return longitud; }
-    public void setLongitud(double longitud) { this.longitud = longitud; }
+    public double getLongitud() {
+        return longitud;
+    }
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
 
-    // --- LÓGICA DE NEGOCIO (No afecta a la BD) ---
 
-    // Distancia / 3km/h (difícil) o 4km/h
     public String getTiempoEstimado() {
-        double velocidad = (dificultad >= 4) ? 3.0 : 4.0;
+        double velocidad;
+        if (dificultad >= 4) {
+            velocidad = 3.0;
+        } else {
+            velocidad = 4.0;
+        }
+
         double tiempo = distancia / velocidad;
         int horas = (int) tiempo;
         int minutos = (int) ((tiempo - horas) * 60);

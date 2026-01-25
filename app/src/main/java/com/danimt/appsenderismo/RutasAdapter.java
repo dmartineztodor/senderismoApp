@@ -1,6 +1,5 @@
 package com.danimt.appsenderismo;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHolder> {
-
     public static List<Ruta> listaRutas;
     private final OnItemClickListener listener;
 
@@ -45,7 +43,6 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHold
         holder.tvDistancia.setText(ruta.getDistancia() + " km");
         holder.rbDificultad.setRating(ruta.getDificultad());
 
-
         if ("Circular".equals(ruta.getTipo())) {
             holder.ivTipo.setImageResource(android.R.drawable.ic_menu_rotate);
         } else {
@@ -61,7 +58,8 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHold
     }
 
     static class RutaViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNombre, tvDistancia;
+        TextView tvNombre;
+        TextView tvDistancia;
         RatingBar rbDificultad;
         ImageView ivTipo;
 

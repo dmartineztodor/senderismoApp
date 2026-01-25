@@ -25,19 +25,18 @@ public class DetalleRutaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_ruta);
 
-        // Recibimos el objeto Ruta
+        // Recibimos el objeto 'Ruta'
         Ruta ruta = (Ruta) getIntent().getSerializableExtra("objeto_ruta");
 
         if (ruta != null) {
-            // Referencias UI básica
+            // Referencias
             TextView tvTitulo = findViewById(R.id.tvTituloDetalle);
             TextView tvDistancia = findViewById(R.id.tvDetalleDistancia);
             TextView tvDificultad = findViewById(R.id.tvDetalleDificultad);
             TextView tvTiempo = findViewById(R.id.tvDetalleTiempo);
             TextView tvDesc = findViewById(R.id.tvDescripcionDetalle);
-            // TextView tvCoordenadas = findViewById(R.id.tvDetalleCoordenadas); // Si lo borraste del XML, comenta esto
             CheckBox cbFav = findViewById(R.id.cbFavorito);
-            Button btnEliminar = findViewById(R.id.btnEliminarRuta); // Referencia al botón eliminar
+            Button btnEliminar = findViewById(R.id.btnEliminarRuta);
 
             // Asignar valores
             tvTitulo.setText(ruta.getNombre());
@@ -46,15 +45,14 @@ public class DetalleRutaActivity extends AppCompatActivity {
             tvDesc.setText(ruta.getDescripcion());
             cbFav.setChecked(ruta.isFavorita());
             tvTiempo.setText(ruta.getTiempoEstimado());
-            // tvCoordenadas.setText("Lat: " + ruta.getLatitud() + " / Long: " + ruta.getLongitud());
 
-            // --- LÓGICA DE MODIFICACIÓN (Actualizar Favorito) ---
+            // Actualizar favorito
             cbFav.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 ruta.setFavorita(isChecked);
                 actualizarRutaEnBD(ruta); // Guardamos el cambio en tiempo real
             });
 
-            // --- LÓGICA DE BORRADO ---
+            // Borrar ruta
             btnEliminar.setOnClickListener(v -> {
                 new AlertDialog.Builder(this)
                         .setTitle("Eliminar Ruta")
@@ -64,17 +62,17 @@ public class DetalleRutaActivity extends AppCompatActivity {
                         .show();
             });
 
-            // --- CONFIGURACIÓN DE PUNTOS DE INTERÉS ---
+            // Puntos de interes
 
-            // 1. Configurar RecyclerView
+            // Configuramos el RecyclerView
             recyclerPuntos = findViewById(R.id.recyclerPuntosInteres);
             recyclerPuntos.setLayoutManager(new LinearLayoutManager(this));
 
-            // Inicializamos adapter vacío
+            // Inicializamos el adapter vacío
             adapter = new PuntosInteresAdapter(new ArrayList<>());
             recyclerPuntos.setAdapter(adapter);
 
-            // 2. Cargar datos de BD en segundo plano
+            // Cargamos los datos de la base de datos en segundo plano
             cargarPuntosDeInteres(ruta.getId());
         }
     }

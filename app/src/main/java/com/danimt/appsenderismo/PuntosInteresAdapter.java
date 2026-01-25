@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class PuntosInteresAdapter extends RecyclerView.Adapter<PuntosInteresAdapter.ViewHolder> {
-
     private List<PuntoInteres> listaPuntos;
-
     public PuntosInteresAdapter(List<PuntoInteres> listaPuntos) {
         this.listaPuntos = listaPuntos;
     }
@@ -39,11 +37,15 @@ public class PuntosInteresAdapter extends RecyclerView.Adapter<PuntosInteresAdap
 
     @Override
     public int getItemCount() {
-        return listaPuntos != null ? listaPuntos.size() : 0;
+        if (listaPuntos == null) {
+            return 0;
+        }
+        return listaPuntos.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNombre, tvCoordenadas;
+        TextView tvNombre;
+        TextView tvCoordenadas;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

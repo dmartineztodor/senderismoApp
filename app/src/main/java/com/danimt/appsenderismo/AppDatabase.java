@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase;
 @Database(entities = {Ruta.class, PuntoInteres.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RutaDao rutaDao();
-
     private static volatile AppDatabase INSTANCE;
 
     public static AppDatabase getDatabase(final Context context) {

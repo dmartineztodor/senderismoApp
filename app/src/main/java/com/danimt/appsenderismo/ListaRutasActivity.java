@@ -21,18 +21,18 @@ public class ListaRutasActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RutasAdapter adapter;
-    private List<Ruta> listaRutas = new ArrayList<>(); // Lista local, ya no es estática
+    private List<Ruta> listaRutas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_rutas);
 
-        // Configurar RecyclerView
+        // Configurar el RecyclerView
         recyclerView = findViewById(R.id.recyclerViewRutas);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Inicializamos el adaptador con una lista vacía por ahora
+        // Inicializamos el adaptador con una lista vacía
         adapter = new RutasAdapter(listaRutas, ruta -> {
             Intent intent = new Intent(ListaRutasActivity.this, DetalleRutaActivity.class);
             intent.putExtra("objeto_ruta", ruta);
@@ -50,7 +50,6 @@ public class ListaRutasActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // Filtramos sobre la lista que ya tenemos cargada de la BD
                 filtrarRutas(position);
             }
             @Override
@@ -58,8 +57,7 @@ public class ListaRutasActivity extends AppCompatActivity {
         });
     }
 
-    // Usamos onResume para recargar la lista cada vez que volvemos a esta pantalla
-    // (por ejemplo, al volver de crear una ruta nueva)
+    // Usamos onResume para cargar la lista cada vez que volvemos a esta pantalla
     @Override
     protected void onResume() {
         super.onResume();
@@ -69,22 +67,18 @@ public class ListaRutasActivity extends AppCompatActivity {
     private void cargarRutasDeBaseDeDatos() {
         new Thread(() -> {
             try {
-                // 1. Acceder a la BD
+                // Accedemos a la base de datos
                 AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
 
-                // 2. Consultar todas las rutas
+                // Consultamos todas las rutas
                 List<Ruta> rutasDeBd = db.rutaDao().getAllRutas();
 
-                // 3. Actualizar la UI
+                // Actualizar la interfaz
                 runOnUiThread(() -> {
-                    listaRutas = rutasDeBd; // Actualizamos la referencia local
+                    listaRutas = rutasDeBd;
                     adapter.setRutas(listaRutas); // Pasamos los datos al adaptador
                     adapter.notifyDataSetChanged(); // Refrescamos la vista
-
-                    // Si el spinner tenía algún filtro seleccionado, habría que reaplicarlo,
-                    // pero por simplicidad cargamos todas.
                 });
-
             } catch (Exception e) {
                 runOnUiThread(() ->
                         Toast.makeText(ListaRutasActivity.this, "Error al cargar datos", Toast.LENGTH_SHORT).show()
@@ -94,8 +88,9 @@ public class ListaRutasActivity extends AppCompatActivity {
     }
 
     private void filtrarRutas(int opcion) {
-        // Importante: Filtramos basándonos en 'listaRutas' que contiene los datos de la BD
-        if (listaRutas == null) return;
+        if (listaRutas == null) {
+            return;
+        }
 
         List<Ruta> filtradas = new ArrayList<>();
         for (Ruta r : listaRutas) {

@@ -10,7 +10,6 @@ import java.util.List;
 @Dao
 public interface RutaDao {
 
-    // CAMBIO 1: Cambiamos 'void' por 'long'.
     // Esto devuelve el ID de la ruta recién creada.
     @Insert
     long insert(Ruta ruta);
@@ -27,7 +26,6 @@ public interface RutaDao {
     @Query("SELECT * FROM rutas WHERE dificultad = :dificultad")
     List<Ruta> getRutasPorDificultad(float dificultad);
 
-    // CAMBIO 2: Añadimos método para insertar Puntos
     @Insert
     void insertPunto(PuntoInteres punto);
 

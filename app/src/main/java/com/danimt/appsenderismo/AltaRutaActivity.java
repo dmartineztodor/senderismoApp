@@ -9,10 +9,7 @@ import android.widget.RatingBar;
 import android.widget.Switch;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
-// Asegúrate de que este import coincida con donde tengas tu AppDatabase
-import com.danimt.appsenderismo.AppDatabase;
-
+// import com.danimt.appsenderismo.AppDatabase;
 public class AltaRutaActivity extends AppCompatActivity {
 
     @Override
@@ -31,7 +28,7 @@ public class AltaRutaActivity extends AppCompatActivity {
         Button btnGuardar = findViewById(R.id.btnGuardar);
 
         btnGuardar.setOnClickListener(v -> {
-            // 1. Recogida de datos
+            // Recogemos los datos
             String nombre = etNombre.getText().toString().trim();
 
             if (nombre.isEmpty()) {
@@ -50,7 +47,7 @@ public class AltaRutaActivity extends AppCompatActivity {
                 // Dificultad
                 float dificultad = rbDificultad.getRating();
 
-                // Distancia (con control de errores numéricos)
+                // Distancia
                 double distancia = 0.0;
                 try {
                     distancia = Double.parseDouble(etDistancia.getText().toString());
@@ -61,37 +58,25 @@ public class AltaRutaActivity extends AppCompatActivity {
                 String descripcion = etDescripcion.getText().toString();
                 boolean esFavorita = swFavorita.isChecked();
 
-                // 2. Creación del Objeto Ruta
+                // Creación del Objeto Ruta
                 Ruta nuevaRuta = new Ruta(nombre, ubicacion, tipo, dificultad, distancia, descripcion, esFavorita);
 
-                // 3. Guardado en Base de Datos (Room) usando un Hilo Secundario
+                // Guardamos en la base de datos (Room) usando un hilo secundario
                 new Thread(() -> {
                     try {
-                        // a) Obtener instancia de la BD
+                        // Primero obtenemos la instancia de la BD (patrón singleton)
                         AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
 
-                        // b) Insertar la ruta y CAPTURAR EL ID generado
-                        // IMPORTANTE: Asegúrate de que en RutaDao el método insert devuelva 'long'
-                        long idNuevaRuta = db.rutaDao().insert(nuevaRuta);
+                        // Insertamos la ruta usando el DAO
+                        db.rutaDao().insert(nuevaRuta);
 
-                        // c) Crear un Punto de Interés de prueba automáticamente
-                        PuntoInteres puntoEjemplo = new PuntoInteres();
-                        puntoEjemplo.nombre = "Inicio de ruta: " + nombre;
-                        puntoEjemplo.latitud = 40.416;  // Coordenadas dummy
-                        puntoEjemplo.longitud = -3.703;
-                        puntoEjemplo.ruta_id = (int) idNuevaRuta; // Vinculamos el punto a la ruta recién creada
-
-                        // d) Insertar el punto de interés
-                        db.rutaDao().insertPunto(puntoEjemplo);
-
-                        // e) Volver al hilo principal para actualizar la UI
+                        // Volvemos al hilo principal para actualizar la interfaz
                         runOnUiThread(() -> {
                             Toast.makeText(AltaRutaActivity.this, getString(R.string.msg_saved), Toast.LENGTH_SHORT).show();
                             finish(); // Cierra la actividad y vuelve a la anterior
                         });
 
                     } catch (Exception e) {
-                        // Gestión de errores en el hilo principal
                         runOnUiThread(() ->
                                 Toast.makeText(AltaRutaActivity.this, "Error al guardar: " + e.getMessage(), Toast.LENGTH_LONG).show()
                         );

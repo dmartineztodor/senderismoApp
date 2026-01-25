@@ -1,5 +1,6 @@
 package com.danimt.appsenderismo;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -10,12 +11,27 @@ import androidx.room.PrimaryKey;
                 childColumns = "ruta_id",
                 onDelete = ForeignKey.CASCADE))
 public class PuntoInteres {
+
     @PrimaryKey(autoGenerate = true)
     public int id;
-    public String nombre;
-    public double latitud;
-    public double longitud;
-    public int ruta_id; // Clave foránea
 
-    // Constructor
+    @ColumnInfo(name = "nombre")
+    public String nombre;
+
+    @ColumnInfo(name = "latitud")
+    public double latitud;
+
+    @ColumnInfo(name = "longitud")
+    public double longitud;
+
+    // --- NUEVO CAMPO OBLIGATORIO SEGÚN PDF ---
+    @ColumnInfo(name = "foto")
+    public String foto; // Guardaremos la URL o ruta del archivo
+    // -----------------------------------------
+
+    @ColumnInfo(name = "ruta_id")
+    public int ruta_id;
+
+    public PuntoInteres() {
+    }
 }

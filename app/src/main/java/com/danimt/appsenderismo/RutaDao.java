@@ -9,11 +9,17 @@ import java.util.List;
 
 @Dao
 public interface RutaDao {
+
+    // CAMBIO 1: Cambiamos 'void' por 'long'.
+    // Esto devuelve el ID de la ruta recién creada.
     @Insert
-    void insert(Ruta ruta);
+    long insert(Ruta ruta);
 
     @Delete
     void delete(Ruta ruta);
+
+    @androidx.room.Update
+    void update(Ruta ruta);
 
     @Query("SELECT * FROM rutas")
     List<Ruta> getAllRutas();
@@ -21,7 +27,10 @@ public interface RutaDao {
     @Query("SELECT * FROM rutas WHERE dificultad = :dificultad")
     List<Ruta> getRutasPorDificultad(float dificultad);
 
-    // Método para obtener puntos de interés de una ruta específica
+    // CAMBIO 2: Añadimos método para insertar Puntos
+    @Insert
+    void insertPunto(PuntoInteres punto);
+
     @Query("SELECT * FROM puntos_interes WHERE ruta_id = :rutaId")
     List<PuntoInteres> getPuntosDeRuta(int rutaId);
 }

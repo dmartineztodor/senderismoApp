@@ -10,6 +10,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+// Asegúrate de que este import coincida con donde tengas tu AppDatabase
 import com.danimt.appsenderismo.AppDatabase;
 
 public class AltaRutaActivity extends AppCompatActivity {
@@ -60,20 +61,30 @@ public class AltaRutaActivity extends AppCompatActivity {
                 String descripcion = etDescripcion.getText().toString();
                 boolean esFavorita = swFavorita.isChecked();
 
-                // 2. Creación del Objeto Ruta (Entidad)
-                // Utilizamos el constructor que acepta parámetros (marcado con @Ignore en la clase Ruta, pero útil aquí)
+                // 2. Creación del Objeto Ruta
                 Ruta nuevaRuta = new Ruta(nombre, ubicacion, tipo, dificultad, distancia, descripcion, esFavorita);
 
                 // 3. Guardado en Base de Datos (Room) usando un Hilo Secundario
                 new Thread(() -> {
                     try {
-                        // a) Obtener instancia de la BD (Singleton)
+                        // a) Obtener instancia de la BD
                         AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
 
-                        // b) Insertar la ruta usando el DAO
-                        db.rutaDao().insert(nuevaRuta);
+                        // b) Insertar la ruta y CAPTURAR EL ID generado
+                        // IMPORTANTE: Asegúrate de que en RutaDao el método insert devuelva 'long'
+                        long idNuevaRuta = db.rutaDao().insert(nuevaRuta);
 
-                        // c) Volver al hilo principal para actualizar la UI
+                        // c) Crear un Punto de Interés de prueba automáticamente
+                        PuntoInteres puntoEjemplo = new PuntoInteres();
+                        puntoEjemplo.nombre = "Inicio de ruta: " + nombre;
+                        puntoEjemplo.latitud = 40.416;  // Coordenadas dummy
+                        puntoEjemplo.longitud = -3.703;
+                        puntoEjemplo.ruta_id = (int) idNuevaRuta; // Vinculamos el punto a la ruta recién creada
+
+                        // d) Insertar el punto de interés
+                        db.rutaDao().insertPunto(puntoEjemplo);
+
+                        // e) Volver al hilo principal para actualizar la UI
                         runOnUiThread(() -> {
                             Toast.makeText(AltaRutaActivity.this, getString(R.string.msg_saved), Toast.LENGTH_SHORT).show();
                             finish(); // Cierra la actividad y vuelve a la anterior

@@ -51,8 +51,8 @@
                 android:gravity="center"
                 android:layout_columnWeight="1">
                 <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_myplaces"/>
-                <TextView android:id="@+id/tvDetalleDistancia" android:text="12km" android:layout_height="2dp" android:layout_width="2dp"/>
-                <TextView android:text="Distancia" android:textSize="12sp" android:layout_height="2dp" android:layout_width="2dp"/>
+                <TextView android:id="@+id/tvDetalleDistancia" android:text="12km" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                <TextView android:text="Distancia" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
             </LinearLayout>
 
             <LinearLayout
@@ -60,8 +60,8 @@
                 android:gravity="center"
                 android:layout_columnWeight="1">
                 <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_sort_by_size"/>
-                <TextView android:id="@+id/tvDetalleDificultad" android:text="Media" android:layout_height="2dp" android:layout_width="2dp"/>
-                <TextView android:text="Dificultad" android:textSize="12sp" android:layout_height="2dp" android:layout_width="2dp"/>
+                <TextView android:id="@+id/tvDetalleDificultad" android:text="Media" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                <TextView android:text="Dificultad" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
             </LinearLayout>
 
             <LinearLayout
@@ -69,8 +69,8 @@
                 android:gravity="center"
                 android:layout_columnWeight="1">
                 <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_recent_history"/>
-                <TextView android:id="@+id/tvDetalleTiempo" android:text="3h 30m" android:layout_height="2dp" android:layout_width="2dp"/>
-                <TextView android:text="Tiempo Est." android:textSize="12sp" android:layout_height="2dp" android:layout_width="2dp"/>
+                <TextView android:id="@+id/tvDetalleTiempo" android:text="3h 30m" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                <TextView android:text="Tiempo Est." android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
             </LinearLayout>
         </GridLayout>
 
@@ -103,5 +103,33 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="20dp"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Puntos de Interés:"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPuntosInteres"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+
+        <Button
+            android:id="@+id/btnEliminarRuta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eliminar Ruta"
+            android:backgroundTint="#FF4444"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="30dp"/>
     </LinearLayout>
 </ScrollView>

@@ -1,52 +1,59 @@
 package com.danimt.appsenderismo;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity {
+// Implementamos el listener del Fragmento de Lista para saber cuándo cambian
+public class MainActivity extends AppCompatActivity implements ListaRutasFragment.OnRutaSeleccionadaListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btnAdd = findViewById(R.id.btnAdd);
-        Button btnView = findViewById(R.id.btnView);
-        Button btnHelp = findViewById(R.id.btnHelp);
-        Button btnAbout = findViewById(R.id.btnAbout);
-        Button btnExit = findViewById(R.id.btnExit);
+        // Configurar Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Mis Rutas");
 
-        // Ir a la actividad de añadir ruta
-        btnAdd.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, AltaRutaActivity.class);
+        // Cargar el Fragmento de Lista al inicio
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new ListaRutasFragment())
+                    .commit();
+        }
+    }
+
+    // Menu superior
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_add) {
+            Intent intent = new Intent(this, AltaRutaActivity.class);
             startActivity(intent);
-        });
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-        // Ver rutas
-        btnView.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ListaRutasActivity.class);
-            startActivity(intent);
-        });
+    @Override
+    public void onRutaSeleccionada(Ruta ruta) {
+        // Crear el fragmento de detalle pasando la ruta
+        DetalleRutaFragment detalleFragment = DetalleRutaFragment.newInstance(ruta);
 
-        // Abrir web
-        btnHelp.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://es.wikiloc.com/rutas/senderismo/espana/murcia/totana"));
-            startActivity(browserIntent);
-        });
-
-        // Ir a Acerca De
-        btnAbout.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, AcercaDeActivity.class);
-            startActivity(intent);
-        });
-
-        // Salir de la app
-        btnExit.setOnClickListener(v -> {
-            finishAffinity(); // Cierra todas las actividades y sale de la app
-        });
+        // Reemplazar el fragmento actual por el de detalle
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, detalleFragment)
+                .addToBackStack(null) // Para que el botón "Atrás" del móvil funcione
+                .commit();
     }
 }

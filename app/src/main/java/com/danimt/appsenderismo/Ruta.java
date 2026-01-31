@@ -4,52 +4,47 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-
 import java.io.Serializable;
 
 @Entity(tableName = "rutas")
 public class Ruta implements Serializable {
 
-    // ID autogenerado
     @PrimaryKey(autoGenerate = true)
     private int id;
 
     @ColumnInfo(name = "nombre")
-    private String nombre;
+    public String nombre; // He puesto public para facilitar acceso, o usa getters
 
     @ColumnInfo(name = "localizacion")
-    private String localizacion;
+    public String localizacion;
 
     @ColumnInfo(name = "tipo")
-    private String tipo; // Circular o lineal
+    public String tipo;
 
     @ColumnInfo(name = "dificultad")
-    private float dificultad; // De 1 a 5
+    public float dificultad;
 
     @ColumnInfo(name = "distancia")
-    private double distancia;
+    public double distancia;
 
     @ColumnInfo(name = "descripcion")
-    private String descripcion;
-
-    @ColumnInfo(name = "notas")
-    private String notas;
+    public String descripcion;
 
     @ColumnInfo(name = "favorita")
-    private boolean favorita;
+    public boolean favorita;
 
     @ColumnInfo(name = "latitud")
-    private double latitud;
+    public double latitud;
 
     @ColumnInfo(name = "longitud")
-    private double longitud;
+    public double longitud;
 
-    // Constructor vacio
     public Ruta() {
     }
 
+    // Constructor
     @Ignore
-    public Ruta(String nombre, String localizacion, String tipo, float dificultad, double distancia, String descripcion, boolean favorita) {
+    public Ruta(String nombre, String localizacion, String tipo, float dificultad, double distancia, String descripcion, boolean favorita, double latitud, double longitud) {
         this.nombre = nombre;
         this.localizacion = localizacion;
         this.tipo = tipo;
@@ -57,96 +52,25 @@ public class Ruta implements Serializable {
         this.distancia = distancia;
         this.descripcion = descripcion;
         this.favorita = favorita;
-    }
-
-    // Getters y setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getLocalizacion() {
-        return localizacion;
-    }
-    public void setLocalizacion(String localizacion) {
-        this.localizacion = localizacion;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public float getDificultad() {
-        return dificultad;
-    }
-    public void setDificultad(float dificultad) {
-        this.dificultad = dificultad;
-    }
-
-    public double getDistancia() {
-        return distancia;
-    }
-    public void setDistancia(double distancia) {
-        this.distancia = distancia;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getNotas() {
-        return notas;
-    }
-    public void setNotas(String notas) {
-        this.notas = notas;
-    }
-
-    public boolean isFavorita() {
-        return favorita;
-    }
-    public void setFavorita(boolean favorita) {
-        this.favorita = favorita;
-    }
-
-    public double getLatitud() {
-        return latitud;
-    }
-    public void setLatitud(double latitud) {
         this.latitud = latitud;
-    }
-
-    public double getLongitud() {
-        return longitud;
-    }
-    public void setLongitud(double longitud) {
         this.longitud = longitud;
     }
 
+    // Getters y Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getNombre() { return nombre; }
+    public double getDistancia() { return distancia; }
+    public float getDificultad() { return dificultad; }
+    public String getDescripcion() { return descripcion; }
+    public boolean isFavorita() { return favorita; }
+    public void setFavorita(boolean favorita) { this.favorita = favorita; }
+    public double getLatitud() { return latitud; }
+    public double getLongitud() { return longitud; }
+    public String getTipo() { return tipo; }
 
     public String getTiempoEstimado() {
-        double velocidad;
-        if (dificultad >= 4) {
-            velocidad = 3.0;
-        } else {
-            velocidad = 4.0;
-        }
-
+        double velocidad = (dificultad >= 4) ? 3.0 : 4.0;
         double tiempo = distancia / velocidad;
         int horas = (int) tiempo;
         int minutos = (int) ((tiempo - horas) * 60);

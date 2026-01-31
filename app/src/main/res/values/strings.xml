@@ -1,37 +1,64 @@
 <resources>
-    <string name="app_name">appSenderismo</string>
-    <string name="btn_add_route">Añadir nueva ruta</string>
-    <string name="btn_view_routes">Ver mis rutas</string>
-    <string name="btn_help">Ayuda</string>
-    <string name="btn_about">Acerca de</string>
-    <string name="btn_exit">Salir</string>
+    <string name="app_name">Senderismo App</string>
 
-    <string name="title_add_route">Nueva Ruta</string>
-    <string name="hint_name">Nombre de la ruta</string>
-    <string name="hint_location">Localización o población</string>
-    <string name="label_type">Tipo de ruta:</string>
-    <string name="radio_circular">Circular</string>
-    <string name="radio_linear">Lineal</string>
-    <string name="label_difficulty">Dificultad (1-5):</string>
-    <string name="hint_distance">Distancia (km)</string>
-    <string name="hint_desc">Descripción</string>
-    <string name="hint_notes">Notas adicionales</string>
-    <string name="switch_fav">Marcar como Favorita</string>
-    <string name="btn_save">Guardar</string>
-    <string name="error_empty_name">El nombre no puede estar vacío</string>
-    <string name="msg_saved">Ruta guardada correctamente</string>
+    <string name="btn_guardar">Guardar</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_eliminar">Eliminar</string>
+    <string name="error_vacio">Campo obligatorio</string>
+    <string name="btn_si">Sí</string>
+    <string name="btn_no">No</string>
+
+    <string name="menu_mis_rutas">Mis Rutas</string>
+    <string name="menu_add_ruta">Añadir Ruta</string>
+    <string name="menu_acerca_de">Acerca de</string>
+
+    <string name="lbl_filtrar">Filtrar por dificultad:</string> <string name="filtro_todas">Todas</string>
+    <string name="filtro_facil">Fácil (&lt; 2.5)</string>
+    <string name="filtro_media">Media (2.5 - 4)</string>
+    <string name="filtro_dificil">Difícil (&gt; 4)</string>
+
+    <string name="lbl_distancia">Distancia</string>
+    <string name="lbl_dificultad">Dificultad</string>
+    <string name="lbl_tiempo">Tiempo Est.</string>
+    <string name="lbl_descripcion">Descripción:</string>
+    <string name="lbl_coordenadas">Coordenadas:</string>
+    <string name="lbl_puntos_interes">Puntos de Interés:</string>
+    <string name="chk_favorita">Marcar como favorita</string>
+    <string name="btn_ver_mapa">Ver en Mapa</string>
+    <string name="btn_eliminar_ruta">Eliminar Ruta</string>
+    <string name="desc_add_punto">Añadir punto de interés</string>
+
+    <string name="default_nombre">Nombre Ruta</string>
+    <string name="default_distancia">0 km</string>
+    <string name="default_dificultad">0.0</string>
+    <string name="default_tiempo">0h 0m</string>
+    <string name="default_coords">Lat: 0.0 / Lon: 0.0</string>
+    <string name="default_desc">Sin descripción</string>
+
+    <string name="hint_nombre_ruta">Nombre de la ruta</string>
+    <string name="hint_localizacion">Localización (ej: Murcia)</string>
+    <string name="hint_distancia_km">Distancia (km)</string>
+    <string name="hint_descripcion">Descripción de la ruta...</string>
+    <string name="lbl_tipo_ruta">Tipo de ruta:</string>
+    <string name="rb_circular">Circular</string>
+    <string name="rb_lineal">Lineal</string>
+    <string name="msg_ruta_guardada">Ruta guardada correctamente</string>
 
     <string name="title_add_point">Añadir Punto de Interés</string>
-    <string name="hint_point_name">Nombre</string>
-    <string name="hint_latitude">Latitud</string>
+    <string name="hint_point_name">Nombre (ej: Fuente)</string>
+    <string name="lbl_nombre_punto">Nombre del Punto</string> <string name="hint_latitude">Latitud</string>
     <string name="hint_longitude">Longitud</string>
-    <string name="label_points_interest">Puntos de Interés</string>
-    <string name="desc_add_point">Añadir Punto</string>
-    <string name="error_missing_name">Mínimo nombre</string>
     <string name="msg_point_added">Punto añadido</string>
-    <string name="btn_cancel">Cancelar</string>
+    <string name="error_missing_name">Pon al menos el nombre</string>
 
-    <string name="about_info">App Senderismo v1.0\nLa app diseñada por y para senderistas entusiasmados\nCreado por: Daniel Martínez Todor y Ruben Gil Lucas\nFecha: 11/01/2026</string>
-    <string name="btn_support">Contactar con soporte</string>
+    <string name="dialog_delete_title">Eliminar Ruta</string>
+    <string name="dialog_delete_msg">¿Estás seguro de que quieres borrar esta ruta y sus puntos de interés?</string>
+
+    <string name="error_empty_name">El nombre no puede estar vacío</string>
+    <string name="msg_saved">Ruta guardada correctamente</string>
     <string name="email_subject">Soporte App Senderismo</string>
+
+    <string name="about_info">Aplicación de Senderismo v1.0\nDesarrollada por Ruben Gil y Daniel Martínez.\nProyecto de clase.</string>
+    <string name="btn_support">Contactar Soporte</string>
+
 </resources>

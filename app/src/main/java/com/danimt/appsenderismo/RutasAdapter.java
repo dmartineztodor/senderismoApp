@@ -54,6 +54,7 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHold
 
     @Override
     public int getItemCount() {
+        if (listaRutas == null) return 0;
         return listaRutas.size();
     }
 

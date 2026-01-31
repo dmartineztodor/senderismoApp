@@ -12,12 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppSenderismo">
         <activity
-            android:name=".DetalleRutaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ListaRutasActivity"
-            android:exported="false" />
-        <activity
             android:name=".AcercaDeActivity"
             android:exported="false" />
         <activity

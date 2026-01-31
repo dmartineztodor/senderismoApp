@@ -16,31 +16,32 @@
 
         <ImageView
             android:id="@+id/ivTipoRuta"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@android:drawable/ic_menu_compass"
-            app:tint="@color/black"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@android:drawable/ic_menu_directions"
+            android:contentDescription="@null" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginStart="16dp">
+            android:paddingStart="16dp">
 
             <TextView
                 android:id="@+id/tvNombreRuta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre Ruta"
+                android:text="@string/default_nombre"
                 android:textSize="18sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDistancia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12 km"/>
+                android:text="@string/default_distancia"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <RatingBar
@@ -49,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            android:isIndicator="true"/>
+            android:stepSize="1"
+            android:isIndicator="true" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

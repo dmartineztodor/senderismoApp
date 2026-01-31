@@ -13,19 +13,41 @@
             android:id="@+id/etNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_name"
-            android:inputType="textCapSentences"/>
+            android:hint="@string/hint_nombre_ruta" />
 
         <EditText
             android:id="@+id/etLocalizacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_location"/>
+            android:hint="@string/hint_localizacion" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/etLatitudAlta"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_latitude"
+                android:inputType="numberDecimal|numberSigned"/>
+
+            <EditText
+                android:id="@+id/etLongitudAlta"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_longitude"
+                android:inputType="numberDecimal|numberSigned"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_type"
+            android:text="@string/lbl_tipo_ruta"
             android:layout_marginTop="10dp"/>
 
         <RadioGroup
@@ -33,23 +55,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/rbCircular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/radio_circular"
+                android:text="@string/rb_circular"
                 android:checked="true"/>
+
             <RadioButton
                 android:id="@+id/rbLineal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/radio_linear"/>
+                android:text="@string/rb_lineal"
+                android:layout_marginStart="16dp"/>
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_difficulty"
+            android:text="@string/lbl_dificultad"
             android:layout_marginTop="10dp"/>
 
         <RatingBar
@@ -57,43 +82,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
-            android:stepSize="1"/>
+            android:stepSize="0.5"/>
 
         <EditText
             android:id="@+id/etDistancia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_distance"
+            android:hint="@string/hint_distancia_km"
             android:inputType="numberDecimal"/>
 
         <EditText
             android:id="@+id/etDescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_desc"
-            android:inputType="textMultiLine"
-            android:minLines="3"/>
-
-        <EditText
-            android:id="@+id/etNotas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_notes"
-            android:inputType="textMultiLine"/>
+            android:hint="@string/hint_descripcion"
+            android:minLines="3"
+            android:gravity="top"/>
 
         <Switch
             android:id="@+id/swFavorita"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/switch_fav"
+            android:text="@string/chk_favorita"
             android:layout_marginTop="10dp"/>
 
         <Button
             android:id="@+id/btnGuardar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_save"
+            android:text="@string/btn_guardar"
             android:layout_marginTop="20dp"/>
-
     </LinearLayout>
 </ScrollView>

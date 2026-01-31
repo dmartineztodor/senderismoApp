@@ -14,13 +14,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:paddingBottom="80dp"> <ImageView
-            android:id="@+id/imgCabecera"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@android:drawable/ic_menu_gallery"
-            android:background="#DDDDDD"/>
+            android:paddingBottom="80dp">
+
+            <ImageView
+                android:id="@+id/imgCabecera"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_menu_gallery"
+                android:background="#DDDDDD"
+                android:contentDescription="@null"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,6 +49,16 @@
                     android:button="@android:drawable/btn_star"/>
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btnVerMapa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_ver_mapa"
+                android:drawableLeft="@android:drawable/ic_dialog_map"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="#2196F3"
+                android:textColor="#FFFFFF"/>
+
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,8 +70,8 @@
                     android:gravity="center"
                     android:layout_columnWeight="1">
                     <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_myplaces"/>
-                    <TextView android:id="@+id/tvDetalleDistancia" android:text="12km" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                    <TextView android:text="Distancia" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                    <TextView android:id="@+id/tvDetalleDistancia" android:text="@string/default_distancia" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                    <TextView android:text="@string/lbl_distancia" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -66,8 +79,8 @@
                     android:gravity="center"
                     android:layout_columnWeight="1">
                     <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_sort_by_size"/>
-                    <TextView android:id="@+id/tvDetalleDificultad" android:text="Media" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                    <TextView android:text="Dificultad" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                    <TextView android:id="@+id/tvDetalleDificultad" android:text="@string/default_dificultad" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                    <TextView android:text="@string/lbl_dificultad" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -75,15 +88,15 @@
                     android:gravity="center"
                     android:layout_columnWeight="1">
                     <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_recent_history"/>
-                    <TextView android:id="@+id/tvDetalleTiempo" android:text="3h 30m" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                    <TextView android:text="Tiempo Est." android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                    <TextView android:id="@+id/tvDetalleTiempo" android:text="@string/default_tiempo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
+                    <TextView android:text="@string/lbl_tiempo" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
                 </LinearLayout>
             </GridLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Descripción:"
+                android:text="@string/lbl_descripcion"
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"/>
 
@@ -91,13 +104,13 @@
                 android:id="@+id/tvDescripcionDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descripción..."
+                android:text="@string/default_desc"
                 android:layout_marginTop="5dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Coordenadas:"
+                android:text="@string/lbl_coordenadas"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"/>
 
@@ -105,7 +118,7 @@
                 android:id="@+id/tvDetalleCoordenadas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lat: 0.0 / Long: 0.0"
+                android:text="@string/default_coords"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="20dp"/>
 
@@ -118,7 +131,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Puntos de Interés:"
+                android:text="@string/lbl_puntos_interes"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginBottom="8dp"/>
@@ -133,7 +146,7 @@
                 android:id="@+id/btnEliminarRuta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Eliminar Ruta"
+                android:text="@string/btn_eliminar_ruta"
                 android:backgroundTint="#FF4444"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="20dp"/>
@@ -148,7 +161,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_input_add"
-        android:contentDescription="Añadir punto de interés"
+        android:contentDescription="@string/desc_add_punto"
         app:backgroundTint="#4CAF50"
         app:tint="#FFFFFF"/>
 

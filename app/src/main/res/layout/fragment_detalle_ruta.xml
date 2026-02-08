@@ -69,27 +69,63 @@
                     android:orientation="vertical"
                     android:gravity="center"
                     android:layout_columnWeight="1">
-                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_myplaces"/>
-                    <TextView android:id="@+id/tvDetalleDistancia" android:text="@string/default_distancia" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                    <TextView android:text="@string/lbl_distancia" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@android:drawable/ic_menu_myplaces"/>
+                    <TextView
+                        android:id="@+id/tvDetalleDistancia"
+                        android:text="@string/default_distancia"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:text="@string/lbl_distancia"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:gravity="center"
                     android:layout_columnWeight="1">
-                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_sort_by_size"/>
-                    <TextView android:id="@+id/tvDetalleDificultad" android:text="@string/default_dificultad" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                    <TextView android:text="@string/lbl_dificultad" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@android:drawable/ic_menu_sort_by_size"/>
+                    <TextView
+                        android:id="@+id/tvDetalleDificultad"
+                        android:text="@string/default_dificultad"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:text="@string/lbl_dificultad"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:gravity="center"
                     android:layout_columnWeight="1">
-                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_recent_history"/>
-                    <TextView android:id="@+id/tvDetalleTiempo" android:text="@string/default_tiempo" android:layout_height="wrap_content" android:layout_width="wrap_content" android:textStyle="bold"/>
-                    <TextView android:text="@string/lbl_tiempo" android:textSize="12sp" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@android:drawable/ic_menu_recent_history"/>
+                    <TextView
+                        android:id="@+id/tvDetalleTiempo"
+                        android:text="@string/default_tiempo"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:text="@string/lbl_tiempo"
+                        android:textSize="12sp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"/>
                 </LinearLayout>
             </GridLayout>
 

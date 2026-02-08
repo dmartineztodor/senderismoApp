@@ -9,11 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-
+//gestion de la lista principal de rutas en el recyclerview
 public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHolder> {
     public static List<Ruta> listaRutas;
     private final OnItemClickListener listener;
 
+    //interfaz de mejora de clics en cada ruta de la lista
     public interface OnItemClickListener {
         void onItemClick(Ruta ruta);
     }
@@ -23,7 +24,7 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHold
         this.listener = listener;
     }
 
-    // Método para actualizar la lista al filtrar
+    //metodo para actualizar los datos del adaptador despues de aplicar filtros
     public void setRutas(List<Ruta> nuevasRutas) {
         this.listaRutas = nuevasRutas;
         notifyDataSetChanged();
@@ -48,7 +49,7 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHold
         } else {
             holder.ivTipo.setImageResource(android.R.drawable.ic_menu_directions);
         }
-
+        //configura el evento de clic y abre el detalle de ruta
         holder.itemView.setOnClickListener(v -> listener.onItemClick(ruta));
     }
 
@@ -58,6 +59,7 @@ public class RutasAdapter extends RecyclerView.Adapter<RutasAdapter.RutaViewHold
         return listaRutas.size();
     }
 
+    //clase interna para manterner las referencias a los componentes visuales
     static class RutaViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre;
         TextView tvDistancia;

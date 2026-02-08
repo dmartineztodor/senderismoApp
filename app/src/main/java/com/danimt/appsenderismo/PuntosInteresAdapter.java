@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
+//Adaptador que va a gestionar la visualizacion de puntos de interes del recyclerview
 public class PuntosInteresAdapter extends RecyclerView.Adapter<PuntosInteresAdapter.ViewHolder> {
     private List<PuntoInteres> listaPuntos;
     public PuntosInteresAdapter(List<PuntoInteres> listaPuntos) {
@@ -26,7 +27,7 @@ public class PuntosInteresAdapter extends RecyclerView.Adapter<PuntosInteresAdap
                 .inflate(R.layout.item_punto_interes, parent, false);
         return new ViewHolder(view);
     }
-
+//Vinculacion datos del objeto puntoInteres con elementos visuales
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PuntoInteres punto = listaPuntos.get(position);
@@ -42,6 +43,7 @@ public class PuntosInteresAdapter extends RecyclerView.Adapter<PuntosInteresAdap
         return listaPuntos.size();
     }
 
+    //  Este contenedor va a optimizar el rendimiento evitando llamadas repetidas
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre;
         TextView tvCoordenadas;

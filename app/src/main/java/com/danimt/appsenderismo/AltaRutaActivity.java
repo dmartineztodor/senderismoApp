@@ -1,11 +1,8 @@
 package com.danimt.appsenderismo;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,15 +23,15 @@ import java.util.Date;
 public class AltaRutaActivity extends AppCompatActivity {
 
     private ImageView imgFoto;
-    private Uri fotoUri; // Aquí guardaremos la URI real de la foto
-    private String currentPhotoPath; // Ruta en texto para la BD
+    private Uri fotoUri;
+    private String rutaImg; // Guardo la ruta aquí para meterla luego en la BD
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alta_ruta);
 
-        // Referencias
+        // Enlazo todos los controles de la interfaz
         EditText etNombre = findViewById(R.id.etNombre);
         EditText etLocalizacion = findViewById(R.id.etLocalizacion);
         EditText etDistancia = findViewById(R.id.etDistancia);
@@ -46,50 +43,54 @@ public class AltaRutaActivity extends AppCompatActivity {
         Switch swFavorita = findViewById(R.id.swFavorita);
         Button btnGuardar = findViewById(R.id.btnGuardar);
 
-        // Referencias Cámara
+        // Controles para la foto
         imgFoto = findViewById(R.id.imgFotoRuta);
         Button btnTomarFoto = findViewById(R.id.btnTomarFoto);
 
-        // Configurar Launcher de Cámara
-        ActivityResultLauncher<Uri> cameraLauncher = registerForActivityResult(
+        // Registro el contrato para recibir el resultado de la cámara
+        ActivityResultLauncher<Uri> camaraLauncher = registerForActivityResult(
                 new ActivityResultContracts.TakePicture(),
                 result -> {
                     if (result) {
-                        // Si la foto se tomó bien, la cargamos en la imagen
+                        // Si la foto se hizo bien, la cargo en la vista previa
                         imgFoto.setImageURI(fotoUri);
                     } else {
-                        currentPhotoPath = null; // Si cancela, borramos la ruta
+                        rutaImg = null; // Si cancela, no guardo
                         Toast.makeText(this, "Foto cancelada", Toast.LENGTH_SHORT).show();
                     }
                 }
         );
 
-        // Botón Cámara
+        // Listener para abrir la cámara
         btnTomarFoto.setOnClickListener(v -> {
             try {
-                File photoFile = crearFicheroImagen();
-                if (photoFile != null) {
-                    // Generar URI segura con FileProvider
+                // Primero creo un fichero temporal vacío
+                File fotoArchivo = crearFicheroImagen();
+                if (fotoArchivo != null) {
+                    // Obtengo una URI segura usando el FileProvider
                     fotoUri = FileProvider.getUriForFile(this,
                             "com.danimt.appsenderismo.fileprovider",
-                            photoFile);
+                            fotoArchivo);
 
-                    // Lanzar cámara
-                    cameraLauncher.launch(fotoUri);
+                    // Lanzo la cámara pasándole la URI donde quiero que guarde la foto
+                    camaraLauncher.launch(fotoUri);
                 }
             } catch (IOException ex) {
                 Toast.makeText(this, "Error al crear fichero de imagen", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Botón Guardar
+        // Listener para guardar la ruta
         btnGuardar.setOnClickListener(v -> {
             String nombre = etNombre.getText().toString().trim();
 
+            // Validación nombre obligatorio
             if (nombre.isEmpty()) {
                 Toast.makeText(this, getString(R.string.error_empty_name), Toast.LENGTH_SHORT).show();
             } else {
                 String ubicacion = etLocalizacion.getText().toString();
+
+                // Saco el texto del RadioButton seleccionado
                 String tipo = "Circular";
                 int selectedId = rgTipo.getCheckedRadioButtonId();
                 if (selectedId != -1) {
@@ -99,6 +100,8 @@ public class AltaRutaActivity extends AppCompatActivity {
 
                 float dificultad = rbDificultad.getRating();
                 double distancia = 0.0;
+
+                // Uso try catch para evitar que la app pete si se meten letras o lo dejan vacío
                 try {
                     distancia = Double.parseDouble(etDistancia.getText().toString());
                 } catch (NumberFormatException e) { distancia = 0.0; }
@@ -106,6 +109,7 @@ public class AltaRutaActivity extends AppCompatActivity {
                 String descripcion = etDescripcion.getText().toString();
                 boolean esFavorita = swFavorita.isChecked();
 
+                // Coordenadas por defecto o las que escriba el usuario
                 double lat = 37.99;
                 double lon = -1.13;
                 try {
@@ -113,19 +117,22 @@ public class AltaRutaActivity extends AppCompatActivity {
                     lon = Double.parseDouble(etLon.getText().toString());
                 } catch (Exception e) {}
 
-                // Guardar la URI como texto (si no hay foto, guardamos null o cadena vacía)
-                String uriGuardar = (currentPhotoPath != null) ? currentPhotoPath : "";
+                // Si tengo ruta de foto la guardo, si no, guardo cadena vacía
+                String uriGuardar = (rutaImg != null) ? rutaImg : "";
 
-                // Crear objeto con la IMAGEN
+                // Creo el objeto con todos los datos
                 Ruta nuevaRuta = new Ruta(nombre, ubicacion, tipo, dificultad, distancia, descripcion, esFavorita, lat, lon, uriGuardar);
 
+                // Guardo en un hilo secundario para no bloquear la interfaz principal
                 new Thread(() -> {
                     try {
                         AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
                         db.rutaDao().insert(nuevaRuta);
+
+                        // Para mostrar el Toast y cerrar, tengo que volver al hilo principal
                         runOnUiThread(() -> {
                             Toast.makeText(AltaRutaActivity.this, getString(R.string.msg_saved), Toast.LENGTH_SHORT).show();
-                            finish();
+                            finish(); // Cierra la activity y vuelve atrás
                         });
                     } catch (Exception e) {
                         runOnUiThread(() -> Toast.makeText(AltaRutaActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
@@ -135,15 +142,16 @@ public class AltaRutaActivity extends AppCompatActivity {
         });
     }
 
-    // Método auxiliar para crear un fichero único donde guardar la foto
+    // Método auxiliar para generar nombres de archivo únicos con la fecha
     private File crearFicheroImagen() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        // Crea el archivo temporal en la carpeta privada de la app
+        File imagen = File.createTempFile(imageFileName, ".jpg", storageDir);
 
-        // Guardamos la ruta absoluta para meterla luego en la BD
-        currentPhotoPath = "file://" + image.getAbsolutePath();
-        return image;
+        // Guardo la ruta absoluta para meterla luego en la BD
+        rutaImg = "file://" + imagen.getAbsolutePath();
+        return imagen;
     }
 }

@@ -1,7 +1,7 @@
 package com.danimt.appsenderismo;
 
 import android.content.Intent;
-import android.media.MediaPlayer; // Importación necesaria
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,15 +23,18 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+// Fragmento principal donde muestro toda la info de la ruta: texto, mapa, foto y audio.
 public class DetalleRutaFragment extends Fragment {
+    // Clave para pasar argumentos de forma segura
     private static final String ARG_RUTA = "ruta";
     private Ruta ruta;
     private RecyclerView recyclerPuntos;
     private PuntosInteresAdapter adapter;
 
-    // Variable para el reproductor de audio
+    // Uso MediaPlayer para manejar el archivo de audio local
     private MediaPlayer mediaPlayer;
 
+    // Constructor estático para crear el fragment pasando la ruta
     public static DetalleRutaFragment newInstance(Ruta ruta) {
         DetalleRutaFragment fragment = new DetalleRutaFragment();
         Bundle args = new Bundle();
@@ -43,6 +46,7 @@ public class DetalleRutaFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Recupero el objeto Ruta de los argumentos si existen
         if (getArguments() != null) {
             ruta = (Ruta) getArguments().getSerializable(ARG_RUTA);
         }
@@ -51,6 +55,7 @@ public class DetalleRutaFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflo el layout correspondiente
         return inflater.inflate(R.layout.fragment_detalle_ruta, container, false);
     }
 
@@ -59,7 +64,7 @@ public class DetalleRutaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (ruta != null) {
-            // Referencias existentes
+            // Referencias a la UI
             TextView tvTitulo = view.findViewById(R.id.tvTituloDetalle);
             TextView tvDistancia = view.findViewById(R.id.tvDetalleDistancia);
             TextView tvDificultad = view.findViewById(R.id.tvDetalleDificultad);
@@ -71,11 +76,11 @@ public class DetalleRutaFragment extends Fragment {
             Button btnMapa = view.findViewById(R.id.btnVerMapa);
             FloatingActionButton fab = view.findViewById(R.id.fabAddPunto);
 
-            // NUEVAS Referencias de Audio
+            // Botones del reproductor
             Button btnPlay = view.findViewById(R.id.btnPlayAudio);
             Button btnStop = view.findViewById(R.id.btnStopAudio);
 
-            // Valores
+            // Relleno los datos visuales
             tvTitulo.setText(ruta.getNombre());
             tvDistancia.setText(ruta.getDistancia() + " km");
             tvDificultad.setText(String.valueOf(ruta.getDificultad()));
@@ -85,20 +90,18 @@ public class DetalleRutaFragment extends Fragment {
             tvCoords.setText(coordsTexto);
             cbFav.setChecked(ruta.isFavorita());
 
-            // --- LÓGICA DE AUDIO ---
-
-            // Inicializamos el MediaPlayer con el archivo de la carpeta res/raw
-            // Asegúrate de que el archivo se llame audioguia_senderismo.mp3 (o cambia el nombre aquí)
+            // Audio: Cargo el audio desde los recursos raw.
+            // Uso create() que ya prepara el player.
             mediaPlayer = MediaPlayer.create(getContext(), R.raw.musicas_fondo);
 
             btnPlay.setOnClickListener(v -> {
                 if (mediaPlayer != null) {
                     if (!mediaPlayer.isPlaying()) {
                         mediaPlayer.start();
-                        Toast.makeText(getContext(), "Reproduciendo audio...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Reproduciendo audio", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Si se liberó en onStop, lo recreamos
+                    // Si se había liberado, lo vuelvo a cargar
                     mediaPlayer = MediaPlayer.create(getContext(), R.raw.musicas_fondo);
                     mediaPlayer.start();
                 }
@@ -107,37 +110,34 @@ public class DetalleRutaFragment extends Fragment {
             btnStop.setOnClickListener(v -> {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
-                    mediaPlayer.seekTo(0); // Volver al inicio
+                    mediaPlayer.seekTo(0); // Rebobino para que la próxima vez empiece desde el principio
                     Toast.makeText(getContext(), "Audio detenido", Toast.LENGTH_SHORT).show();
                 }
             });
 
-            // --- FIN LÓGICA DE AUDIO ---
-
-            // Boton Mapa
+            // Abre Google Maps usando geo URI
             btnMapa.setOnClickListener(v -> abrirGoogleMaps());
 
-            // Checkbox Favorito
+            // Listener para actualizar favorito en tiempo real
             cbFav.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 ruta.setFavorita(isChecked);
                 actualizarRutaEnBD();
             });
 
-            // Botón Eliminar
             btnEliminar.setOnClickListener(v -> confirmarBorrado());
 
-            // Botón Flotante (Añadir Punto)
             fab.setOnClickListener(v -> mostrarDialogoAñadir());
 
-            // Configurar Lista de Puntos
+            // Configuro el Recycler para los puntos de interés
             recyclerPuntos = view.findViewById(R.id.recyclerPuntosInteres);
             recyclerPuntos.setLayoutManager(new LinearLayoutManager(getContext()));
             adapter = new PuntosInteresAdapter(new ArrayList<>());
             recyclerPuntos.setAdapter(adapter);
 
-            // Referencia a la imagen de cabecera
+            // Imagen de cabecera
             ImageView imgCabecera = view.findViewById(R.id.imgCabecera);
 
+            // Si tengo una URI guardada, la cargo, si no, pongo imagen por defecto
             if (ruta.getImagenUri() != null && !ruta.getImagenUri().isEmpty()) {
                 imgCabecera.setImageURI(Uri.parse(ruta.getImagenUri()));
                 imgCabecera.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -145,11 +145,12 @@ public class DetalleRutaFragment extends Fragment {
                 imgCabecera.setImageResource(android.R.drawable.ic_menu_gallery);
             }
 
+            // Cargo los puntos en hilo secundario
             cargarPuntos();
         }
     }
 
-    // Gestionar el ciclo de vida: Si el usuario sale, el audio se detiene y libera memoria
+    // Método para liberar recursos al salir
     @Override
     public void onStop() {
         super.onStop();
@@ -157,20 +158,20 @@ public class DetalleRutaFragment extends Fragment {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
-            mediaPlayer.release();
+            mediaPlayer.release(); // Libero memoria
             mediaPlayer = null;
         }
     }
 
-    // Métodos existentes...
+    // Lanza un Intent implícito para abrir mapas
     private void abrirGoogleMaps() {
         Uri gmmIntentUri = Uri.parse("geo:" + ruta.getLatitud() + "," + ruta.getLongitud() + "?q=" + ruta.getLatitud() + "," + ruta.getLongitud() + "(" + Uri.encode(ruta.getNombre()) + ")");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
+        mapIntent.setPackage("com.google.android.apps.maps"); // Intento forzar Google Maps
         try {
             startActivity(mapIntent);
         } catch (Exception e) {
-            startActivity(new Intent(Intent.ACTION_VIEW, gmmIntentUri));
+            startActivity(new Intent(Intent.ACTION_VIEW, gmmIntentUri)); // Fallback genérico
         }
     }
 
@@ -183,13 +184,14 @@ public class DetalleRutaFragment extends Fragment {
                 .show();
     }
 
+    // Borrado en segundo plano para no bloquear la UI
     private void borrarRuta() {
         new Thread(() -> {
             AppDatabase.getDatabase(getContext()).rutaDao().delete(ruta);
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     Toast.makeText(getContext(), R.string.btn_eliminar_ruta, Toast.LENGTH_SHORT).show();
-                    getActivity().getSupportFragmentManager().popBackStack();
+                    getActivity().getSupportFragmentManager().popBackStack(); // Vuelvo atrás
                 });
             }
         }).start();
@@ -201,6 +203,7 @@ public class DetalleRutaFragment extends Fragment {
         }).start();
     }
 
+    // Muestra un diálogo personalizado (inflado desde XML)
     private void mostrarDialogoAñadir() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         LayoutInflater inflater = getLayoutInflater();
@@ -234,12 +237,12 @@ public class DetalleRutaFragment extends Fragment {
             nuevoPunto.nombre = nombre;
             nuevoPunto.latitud = lat;
             nuevoPunto.longitud = lon;
-            nuevoPunto.ruta_id = ruta.getId();
+            nuevoPunto.ruta_id = ruta.getId(); // Relaciono con la ruta actual
             AppDatabase.getDatabase(getContext()).rutaDao().insertPunto(nuevoPunto);
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     Toast.makeText(getContext(), R.string.msg_point_added, Toast.LENGTH_SHORT).show();
-                    cargarPuntos();
+                    cargarPuntos(); // Refresco la lista
                 });
             }
         }).start();

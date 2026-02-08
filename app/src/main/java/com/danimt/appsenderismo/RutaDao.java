@@ -10,6 +10,8 @@ import java.util.List;
 
 @Dao
 public interface RutaDao {
+
+    // --- MÉTODOS PARA RUTAS (Estos ya los tenías) ---
     @Insert
     void insert(Ruta ruta);
 

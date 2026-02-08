@@ -120,8 +120,42 @@
                 android:layout_height="wrap_content"
                 android:text="@string/default_coords"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="10dp"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Audioguía de la ruta"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp">
+
+                <Button
+                    android:id="@+id/btnPlayAudio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Reproducir"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="#4CAF50"
+                    android:drawableLeft="@android:drawable/ic_media_play"/>
+
+                <Button
+                    android:id="@+id/btnStopAudio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Parar"
+                    android:backgroundTint="#9E9E9E"
+                    android:drawableLeft="@android:drawable/ic_media_pause"/>
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

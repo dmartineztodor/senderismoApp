@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -46,7 +47,7 @@ public class DetalleRutaFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_detalle_ruta, container, false);
+        return inflater.inflate(R.layout.fragment_detalle_ruta, container, false);
     }
 
     @Override
@@ -98,6 +99,20 @@ public class DetalleRutaFragment extends Fragment {
             recyclerPuntos.setLayoutManager(new LinearLayoutManager(getContext()));
             adapter = new PuntosInteresAdapter(new ArrayList<>());
             recyclerPuntos.setAdapter(adapter);
+
+            // Referencia a la imagen de cabecera
+            ImageView imgCabecera = view.findViewById(R.id.imgCabecera);
+
+            // Lógica para cargar la foto si existe
+            if (ruta.getImagenUri() != null && !ruta.getImagenUri().isEmpty()) {
+                // Si hay foto guardada, la mostramos
+                imgCabecera.setImageURI(Uri.parse(ruta.getImagenUri()));
+                // Ajustamos la escala para que se vea bonita
+                imgCabecera.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            } else {
+                // Si no hay foto, dejamos la de por defecto
+                imgCabecera.setImageResource(android.R.drawable.ic_menu_gallery);
+            }
 
             // Cargar puntos de la BD
             cargarPuntos();

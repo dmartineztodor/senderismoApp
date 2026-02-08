@@ -5,7 +5,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Ruta.class, PuntoInteres.class}, version = 1)
+// CAMBIO A VERSIÓN 2
+@Database(entities = {Ruta.class, PuntoInteres.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RutaDao rutaDao();
     private static volatile AppDatabase INSTANCE;
@@ -15,7 +16,9 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "senderismo_database").build();
+                                    AppDatabase.class, "senderismo_database")
+                            .fallbackToDestructiveMigration()
+                            .build();
                 }
             }
         }

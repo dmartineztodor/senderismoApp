@@ -13,7 +13,7 @@ public class Ruta implements Serializable {
     private int id;
 
     @ColumnInfo(name = "nombre")
-    public String nombre; // He puesto public para facilitar acceso, o usa getters
+    public String nombre;
 
     @ColumnInfo(name = "localizacion")
     public String localizacion;
@@ -39,12 +39,16 @@ public class Ruta implements Serializable {
     @ColumnInfo(name = "longitud")
     public double longitud;
 
+    // --- NUEVO CAMPO PARA LA FOTO ---
+    @ColumnInfo(name = "imagenUri")
+    public String imagenUri;
+
     public Ruta() {
     }
 
-    // Constructor
+    // Constructor ACTUALIZADO (Añadido imagenUri al final)
     @Ignore
-    public Ruta(String nombre, String localizacion, String tipo, float dificultad, double distancia, String descripcion, boolean favorita, double latitud, double longitud) {
+    public Ruta(String nombre, String localizacion, String tipo, float dificultad, double distancia, String descripcion, boolean favorita, double latitud, double longitud, String imagenUri) {
         this.nombre = nombre;
         this.localizacion = localizacion;
         this.tipo = tipo;
@@ -54,12 +58,14 @@ public class Ruta implements Serializable {
         this.favorita = favorita;
         this.latitud = latitud;
         this.longitud = longitud;
+        this.imagenUri = imagenUri; // Guardamos la ruta de la foto
     }
 
     // Getters y Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; } // Añadido setter por si acaso
     public double getDistancia() { return distancia; }
     public float getDificultad() { return dificultad; }
     public String getDescripcion() { return descripcion; }
@@ -68,6 +74,10 @@ public class Ruta implements Serializable {
     public double getLatitud() { return latitud; }
     public double getLongitud() { return longitud; }
     public String getTipo() { return tipo; }
+
+    // Getter y Setter para la imagen
+    public String getImagenUri() { return imagenUri; }
+    public void setImagenUri(String imagenUri) { this.imagenUri = imagenUri; }
 
     public String getTiempoEstimado() {
         double velocidad = (dificultad >= 4) ? 3.0 : 4.0;

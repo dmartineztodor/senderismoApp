@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-// Implementamos el listener del Fragmento de Lista para saber cuándo cambian
 public class MainActivity extends AppCompatActivity implements ListaRutasFragment.OnRutaSeleccionadaListener {
 
     @Override

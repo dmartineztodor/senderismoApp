@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface RutaDao {
 
-    // --- MÉTODOS PARA RUTAS (Estos ya los tenías) ---
+    // --- MÉTODOS BÁSICOS ---
     @Insert
     void insert(Ruta ruta);
 
@@ -24,15 +24,29 @@ public interface RutaDao {
     @Query("SELECT * FROM rutas")
     List<Ruta> getAllRutas();
 
+    // --- NUEVAS CONSULTAS DE FILTRADO (RANGOS) ---
+
+    // Fácil: Menor de 2.5
+    @Query("SELECT * FROM rutas WHERE dificultad < 2.5")
+    List<Ruta> getRutasFaciles();
+
+    // Media: Entre 2.5 y 4
+    @Query("SELECT * FROM rutas WHERE dificultad >= 2.5 AND dificultad <= 4")
+    List<Ruta> getRutasMedias();
+
+    // Difícil: Mayor de 4
+    @Query("SELECT * FROM rutas WHERE dificultad > 4")
+    List<Ruta> getRutasDificiles();
+
+    // (Mantenemos esta por si la usabas en otro lado, aunque con las de arriba ya cubres todo)
     @Query("SELECT * FROM rutas WHERE dificultad = :dificultad")
     List<Ruta> getByDificultad(float dificultad);
 
 
-    // Para guardar un punto nuevo desde el diálogo
+    // --- PUNTOS DE INTERÉS ---
     @Insert
     void insertPunto(PuntoInteres punto);
 
-    // Para cargar la lista de puntos de una ruta específica
     @Query("SELECT * FROM puntos_interes WHERE ruta_id = :rutaId")
     List<PuntoInteres> getPuntosDeRuta(int rutaId);
 }

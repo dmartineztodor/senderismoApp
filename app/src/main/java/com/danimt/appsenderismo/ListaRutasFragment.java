@@ -84,12 +84,32 @@ public class ListaRutasFragment extends Fragment {
 
     private void cargarRutas(int filtro) {
         new Thread(() -> {
-            // Acceso a BD
-            List<Ruta> rutas = AppDatabase.getDatabase(getContext()).rutaDao().getAllRutas();
+            List<Ruta> rutas;
+            RutaDao dao = AppDatabase.getDatabase(getContext()).rutaDao();
+
+            // Usamos los nuevos métodos del DAO según el filtro
+            switch (filtro) {
+                case 1: // Fácil
+                    rutas = dao.getRutasFaciles();
+                    break;
+                case 2: // Media
+                    rutas = dao.getRutasMedias();
+                    break;
+                case 3: // Difícil
+                    rutas = dao.getRutasDificiles();
+                    break;
+                default: // Todas (caso 0)
+                    rutas = dao.getAllRutas();
+                    break;
+            }
 
             if (getActivity() != null) {
+                // Pasamos la lista final a la UI
+                List<Ruta> finalRutas = rutas;
                 getActivity().runOnUiThread(() -> {
-                    if (rutas != null) adapter.setRutas(rutas);
+                    if (finalRutas != null) {
+                        adapter.setRutas(finalRutas);
+                    }
                 });
             }
         }).start();

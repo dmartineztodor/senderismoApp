@@ -16,20 +16,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+// Fragmento encargado de mostrar el listado, sustituye a la antigua ListaRutasActivity
 public class ListaRutasFragment extends Fragment {
-
     private RecyclerView recyclerView;
     private RutasAdapter adapter;
     private OnRutaSeleccionadaListener listener;
 
-    // Interfaz para comunicarse con el Main Activity
+    // Defino esta interfaz para comunicarme con el MainActivity.
+    // El fragmento no decide qué pasa al hacer clic, solo "avisa" a la actividad padre.
     public interface OnRutaSeleccionadaListener {
         void onRutaSeleccionada(Ruta ruta);
     }
 
+    // Ciclo de vida: Se ejecuta cuando el fragmento se pega a la Activity
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        // Compruebo que la Activity implementa la interfaz. Si no, lanzo error
         if (context instanceof OnRutaSeleccionadaListener) {
             listener = (OnRutaSeleccionadaListener) context;
         } else {
@@ -40,6 +43,7 @@ public class ListaRutasFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Inflo el diseño XML que preparé para la lista
         return inflater.inflate(R.layout.activity_lista_rutas, container, false);
     }
 
@@ -50,7 +54,8 @@ public class ListaRutasFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewRutas);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Configurar el click del adaptador, pasamos null a la lista inicial, luego la cargamos
+        // Configuro el adaptador. La lista inicial es null (se carga luego).
+        // Uso una lambda para manejar el clic: cuando tocan una ruta, aviso al listener (MainActivity).
         adapter = new RutasAdapter(null, ruta -> {
             if (listener != null) {
                 listener.onRutaSeleccionada(ruta);
@@ -58,17 +63,20 @@ public class ListaRutasFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
 
-        // Configuración del Spinner (Filtrado)
+        // Configuración del Spinner para el filtrado por dificultad
         Spinner spinner = view.findViewById(R.id.spinnerFiltro);
         String[] opciones = {"Todas", "Fácil (< 2.5)", "Media (2.5 - 4)", "Difícil (> 4)"};
+
+        // Adaptador simple para mostrar las opciones del String[] en el Spinner
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, opciones);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
 
+        // Listener para detectar cuando el usuario cambia el filtro
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cargarRutas(position);
+                cargarRutas(position); // Recargo la lista según la selección
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -78,16 +86,17 @@ public class ListaRutasFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Recargamos al volver
+        // Recargo siempre al volver (por si se ha borrado una ruta o se ha creado una nueva)
         cargarRutas(0);
     }
 
+    // Método para pedir los datos a la BD en segundo plano
     private void cargarRutas(int filtro) {
         new Thread(() -> {
             List<Ruta> rutas;
             RutaDao dao = AppDatabase.getDatabase(getContext()).rutaDao();
 
-            // Usamos los nuevos métodos del DAO según el filtro
+            // Elijo qué consulta hacer al DAO según la opción del Spinner
             switch (filtro) {
                 case 1: // Fácil
                     rutas = dao.getRutasFaciles();
@@ -103,12 +112,12 @@ public class ListaRutasFragment extends Fragment {
                     break;
             }
 
+            // Para actualizar la pantalla, tengo que volver al hilo principal obligatoriamente
             if (getActivity() != null) {
-                // Pasamos la lista final a la UI
                 List<Ruta> finalRutas = rutas;
                 getActivity().runOnUiThread(() -> {
                     if (finalRutas != null) {
-                        adapter.setRutas(finalRutas);
+                        adapter.setRutas(finalRutas); // Le paso los nuevos datos al adaptador
                     }
                 });
             }
